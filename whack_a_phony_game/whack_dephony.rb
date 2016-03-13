@@ -1,5 +1,4 @@
 require 'gosu'
-require_relative 'ruby.png'
 
 class WhackDePhony < Gosu::Window
   def initialize
