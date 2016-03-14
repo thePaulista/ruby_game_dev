@@ -15,8 +15,9 @@ class WhackDePhony < Gosu::Window
     @visible = 0
     @hammer_image = Gosu::Image.new('hammer.png')
     @hit = 0
-    @font = Gosu::Font.new(30)
+    @font = Gosu::Font.new(30) #adds score
     @score = 0
+    @start_time = 0
   end
 
   def draw()
@@ -39,14 +40,18 @@ class WhackDePhony < Gosu::Window
   def update()
     @x += @velocity_x
     @y ++ @velocity_y
+    @visible  -= 1
+    @time_left = (100 - ((Gosu.milliseconds - @start_time) /1000))
+    @playing = false if @time_left < 0
     @velocity_x *= -1 if @x + @width / 2 > 800 || @x - @width / 2 < 0
     @velocity_y *= -1 if @y + @height / 2 > 600 || @y - @height / 2 < 0
     @visible -= 1
     @visible = 30 if @visible < -10 && rand < 0.05
+    @time_left = (100 - (Gosu.milliseconds / 1000))
   end
 
   def button_down(id)
-    if (id == Gosu::MsLeft) #left mouse button
+    if (id == Gosu::MsLeft) #sets to left mouse button
       if Gosu.distance(mouse_x, mouse_y, @x, @y) < 50 && @visible >= 0
         @hit = 1
         @score += 3
